@@ -1,0 +1,68 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+	int a,b1,b[256],c[256],d[256],i=0,n=0,m=0;
+	cin>>a>>b1;
+	while(n<b1)
+	{
+		cin>>b[i]>>c[i]>>d[i];
+		i++;
+		n++;
+	}
+	i=0;
+	while(i<b1)
+	{
+		if((c[i]-b[i])*100<d[i])
+		{
+			b[i]=0;
+			c[i]=0;
+			d[i]=0;
+		}
+		i++;
+	}
+	i=0;
+	while(i<b1)
+	{
+		if(abs(b[i+1]-b[i])+abs(c[i+1]-c[i])<abs(c[i]-b[i])+abs(c[i+1]-b[i+1]))
+		{
+			if(d[i]<d[i+1])
+			{
+				b[i+1]=0;
+				c[i+1]=0;
+				d[i+1]=0;
+			}
+			else
+			{
+				b[i]=0;
+				c[i]=0;
+				d[i]=0;	
+			}
+		}
+		i++;
+	}
+	i=0;
+	n=1;
+	while(n<=a)
+	{
+		while(i<b1)
+		{
+			if(n<b[i] or n>c[i] and d[i]!=0)
+			{
+				m=m+100;
+				break;
+			}
+			i++;
+		}
+		n++;
+		i=0;
+	} 
+	i=0;
+	while(i<b1)
+	{
+		m=m+d[i];
+		i++;
+	}
+	cout<<m;
+}

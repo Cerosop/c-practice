@@ -1,0 +1,48 @@
+int findpath(int s, int t){ //起始, 終點
+    memset(flow, 0, sizeof(flow)); //紀錄可流到此點的流量
+    memset(parent, 0, sizeof(parent));  //記錄流到此點的上一點
+    queue<int> q;
+    q.push(s);
+    parent[s] = s;
+    flow[s] = INT_MAX;
+    while(!q.empty())
+        x = q.front();
+        q.pop();
+        for(i from 1 to n)
+            if(remain[x][i] > 0 && parent[i] == 0) //還可以走 && 這次未被造訪
+                parent[i] = x;
+                flow[i] = min(flow[x], remain[x][i]);   //通過的量為min(可流到上一點的流量, 道路大小)
+                if(i == t)  //流到終點
+                    return flow[i];
+                q.push(i);
+
+    return 0;   //流不到終點
+}
+
+int main(){
+    remain[0][0] to remain[n][n] = 0;
+    all[0][0] to all[n][n] = 0;
+    while(m--)
+        input>>a>>b>>w;
+        remain[a][b] = w;   //計算剩多少路
+        remain[b][a] = w;   
+        all[a][b] = w;  //紀錄原始的路
+        all[b][a] = w;
+
+    while(1)
+        fmin = findpath(1, 2);  //現道路大小第一個可通過道路的最大水流流量
+        if(fmin == 0) //流不過去
+            break;
+        int t = 2, s = parent[t];
+        while(s != t)
+            remain[s][t] -= fmin; //剩下的路與此次水流做增減
+            remain[t][s] += fmin;
+            t = s;
+            s = parent[t];
+
+    for(i from 1 to n)
+        if(flow[i] > 0) //能流到i
+            for(j from 1 to n)
+                if(!flow[j] && all[i][j]) //有路卻流不到j(這條路比較小，先被花完)
+                    output<<i<<" "<<j<<"\n";
+}
