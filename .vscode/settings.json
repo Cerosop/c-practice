@@ -45,7 +45,8 @@
         "span": "cpp",
         "stacktrace": "cpp",
         "regex": "cpp",
-        "uva10480pseu": "c"
+        "uva10480pseu": "c",
+        "numeric": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
 }
