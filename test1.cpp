@@ -1,54 +1,110 @@
-/*
- * @Author: Cerosop jmhsu920816@gmail.com
- * @Date: 2022-12-07 14:01:59
- * @LastEditors: Cerosop jmhsu920816@gmail.com
- * @LastEditTime: 2023-03-20 00:41:23
- * @FilePath: \c++\test1.cpp
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-#include <iostream>
-#include <vector>
-#include <climits>
+#include <bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
-int matrixChainMultiplication(vector<pair<int,int>>& matrices) {
-    int n = matrices.size();
-    vector<vector<int>> M(n, vector<int>(n, 0));
-    vector<vector<int>> s(n, vector<int>(n, -1));
-    for (int len = 2; len <= n; len++) {
-        for (int i = 0; i < n - len + 1; i++) {
-            int j = i + len - 1;
-            M[i][j] = INT_MAX;
-            for (int k = i; k < j; k++) {
-                int cost = M[i][k] + M[k+1][j] + matrices[i].first * matrices[k].second * matrices[j].second;
-                if(cost < M[i][j]){
-                    M[i][j] = cost;
-                    s[i][j] = k;
-                }
-            }
-        }
-    }
-    for(int i = 0; i < 6; i++){
-        for(int j = 0; j < 6; j++){
-            cout<<M[i][j]<<" ";
-        
-        }
-        cout<<"\n";
-    }
-    for(int i = 0; i < 6; i++){
-        for(int j = 0; j < 6; j++){
-            cout<<s[i][j]<<" ";
-        
-        }
-        cout<<"\n";
-    }
-    return M[0][n-1];
+struct Big : vector<int> {
+	Big() : Big(1) {}	
+
+	Big(int n) : vector<int>(max(1, n)) {}
+
+	Big(vector<int>::const_iterator start, vector<int>::const_iterator end) : vector<int>(start, end) {
+		if (empty()) emplace_back();
+	}
+
+	Big(string s) {
+		copy(s.rbegin(), s.rend(), back_inserter(*this));
+		for (auto it = begin(); it != end(); *it++ -= '0');
+		while (size() > 1 and back() == 0) pop_back();
+	}
+	
+	friend istream& operator>>(istream &is, Big &num) {
+		string s;
+		cin >> s;
+		num = Big(s);
+		return is;
+	}
+
+	friend ostream& operator<<(ostream &os, const Big &num) {
+		for (auto it = num.rbegin(); it != num.rend(); os << *it++);
+		return os;
+	}
+
+	Big& shift(int p) {
+		fill_n(back_inserter(*this), p, 0);
+		rotate(begin(), end() - p, end());
+		return *this;
+	}
+
+	bool iszero() const { return (*this) == vector<int>{0}; }
+
+	friend Big operator+(const Big &lhs, const Big &rhs) {
+		const int n = lhs.size(), m = rhs.size();
+
+		Big res(max(n, m) + 1);
+		for (int i = 0; i < res.size() - 1; i++) {
+			if (i < n) res[i] += lhs[i];
+			if (i < m) res[i] += rhs[i];
+			if (res[i] > 9) res[i] -= 10, res[i + 1] += 1;
+		}
+
+		while (res.size() > 1 and res.back() == 0) res.pop_back();
+
+		return res;
+	}
+	friend Big operator-(const Big &lhs, const Big &rhs) { // lhs >= rhs;
+		const int n = lhs.size(), m = rhs.size();
+
+		Big res(max(n, m) + 1);
+		for (int i = 0; i < res.size() - 1; i++) {
+			if (i < n) res[i] += lhs[i];
+			if (i < m) res[i] -= rhs[i];
+			while (res[i] < 0) res[i] += 10, res[i + 1] -= 1;
+		}
+
+		while (res.size() > 1 and res.back() == 0) res.pop_back();
+
+		return res;
+	}
+	friend Big operator*(const Big &lhs, const Big &rhs) {
+		if (lhs.iszero() or rhs.iszero()) return Big();
+
+		const int n = lhs.size(), m = rhs.size();
+
+		Big res(n + m);
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++)
+				res[i + j] += lhs[i] * rhs[j];
+
+		for (int i = 0; i < n + m - 1; i++)
+			res[i + 1] += res[i] / 10, res[i] %= 10;
+
+		while (res.size() > 1 and res.back() == 0) res.pop_back();
+
+		return res;
+	}
+};
+
+void solve() {
+	Big a, b, c;
+	cin >> a >> b;
+
+
+	const int T = 200;
+	auto st = high_resolution_clock::now();
+	for (int t = 0; t < T; t++) {
+		c = a * b;
+	}
+	auto ed = high_resolution_clock::now();
+	auto dt = duration_cast<nanoseconds>(ed - st);
+
+	cout << c << '\n';
+	cout << dt.count() / T << '\n';
+	
 }
 
-int main() {
-    vector<pair<int,int>> matrices = {{5, 10}, {10, 3}, {3, 12}, {12, 5}, {5, 50}, {50, 6}};
-    int result = matrixChainMultiplication(matrices);
-    cout << "Minimum number of scalar multiplications: " << result << endl;
-    return 0;
+signed main() {
+	ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+	solve();
+	return 0;
 }

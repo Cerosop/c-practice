@@ -49,4 +49,5 @@
         "numeric": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
+    "qtForPython.designer.path": "{     \"qtForPython.designer.path\": \"C:\\Windows\\System32\\env\\Lib\\site-packages\\PySide6\\designer.exe\",     \"qtForPython.rcc.path\": \"C:\\Windows\\System32\\env\\Lib\\site-packages\\PySide6\\rcc.exe\",     \"qtForPython.uic.path\": \"C:\\Windows\\System32\\env\\Lib\\site-packages\\PySide6\\uic.exe\", }",
 }

@@ -84,7 +84,6 @@ int main(){
             ans.emplace(make_tuple(i.a, i.b, i.c));
         }
     }
-
     cout<<"\n"<<"生成答案所花費: "<<(double)(clock() - START) / CLOCKS_PER_SEC<<" s\n";
     // for(auto i = ans.rbegin(); i != ans.rend(); ++i){
     //     cout<<get<0>(*i)<<" "<<get<1>(*i)<<" "<<get<2>(*i)<<"\n";

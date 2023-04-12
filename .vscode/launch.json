@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "test",
+            "projectName": "c++_18cb9ccc"
+        },
+        {
             "name": "g++.exe - 建置及偵錯使用中的檔案",
             "type": "cppdbg",
             "request": "launch",
